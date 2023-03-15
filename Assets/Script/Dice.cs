@@ -12,10 +12,13 @@ public class Dice : MonoBehaviour
 
     public int diceValue;
 
+    public int currentPoint;
+
     public DiceSide[] diceSides;
 
     private void Start()
     {
+        currentPoint = 1;
         rb = GetComponent<Rigidbody>();
         initPosition = transform.position;
         rb.useGravity = false;
@@ -33,8 +36,10 @@ public class Dice : MonoBehaviour
             rb.useGravity = false;
             rb.isKinematic = true;
 
-            CheckSideValue();
-
+            GameObject go = GameObject.FindGameObjectWithTag("Player");
+            var component = go.gameObject.GetComponent<GamblerCat>();
+            currentPoint += GetSideValue();
+            component.MoveToPoint(currentPoint);
         }
         else if (rb.IsSleeping() && hasLanded && diceValue == 0)
         {
@@ -73,7 +78,7 @@ public class Dice : MonoBehaviour
         rb.AddTorque(Random.Range(0, 500), Random.Range(0, 500), Random.Range(0, 500));
     }
 
-    private void CheckSideValue()
+    private int GetSideValue()
     {
         diceValue = 0;
         foreach (DiceSide side in diceSides)
@@ -81,8 +86,11 @@ public class Dice : MonoBehaviour
             if (side.OnGround())
             {
                 diceValue = side.sideValue;
-                Debug.Log(diceValue + " has been rolled");
+                // Debug.Log(diceValue + " has been rolled");
+                print(diceValue + "!!!!!!");
+                return diceValue;
             }
         }
+        return diceValue;
     }
 }
