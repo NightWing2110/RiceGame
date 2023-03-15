@@ -7,15 +7,10 @@ public class Dice : MonoBehaviour
     Rigidbody rb;
     bool hasLanded;
     bool thrown;
-
     Vector3 initPosition;
-
     public int diceValue;
-
     public int currentPoint;
-
     public DiceSide[] diceSides;
-
     private void Start()
     {
         currentPoint = 1;
@@ -51,9 +46,7 @@ public class Dice : MonoBehaviour
     {
         if (!thrown && !hasLanded)
         {
-            thrown = true;
-            rb.useGravity = true;
-            rb.AddTorque(Random.Range(0, 500), Random.Range(0, 500), Random.Range(0, 500));
+            Roll();
         }
         else if (thrown && hasLanded)
         {
@@ -73,6 +66,11 @@ public class Dice : MonoBehaviour
     private void RollAgain()
     {
         ResetDice();
+        Roll();
+
+    }
+    private void Roll()
+    {
         thrown = true;
         rb.useGravity = true;
         rb.AddTorque(Random.Range(0, 500), Random.Range(0, 500), Random.Range(0, 500));
@@ -85,10 +83,7 @@ public class Dice : MonoBehaviour
         {
             if (side.OnGround())
             {
-                diceValue = side.sideValue;
-                // Debug.Log(diceValue + " has been rolled");
-                print(diceValue + "!!!!!!");
-                return diceValue;
+                return diceValue = side.sideValue;
             }
         }
         return diceValue;
